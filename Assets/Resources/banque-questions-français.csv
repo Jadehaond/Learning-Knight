@@ -1,0 +1,104 @@
+Type,Niveau(x),Questions,Réponse Vraie,Réponse Fausse,Réponse Fausse,Réponse Fausse
+Lecture,CP,un,1,0,1,2
+Lecture,CP,deux,2,10,1,12
+Lecture,CP,trois,3,13,16,6
+Lecture,CP,quatre,4,14,15,20
+Lecture,CP,cinq,5,6,4,7
+Lecture,CP,six,6,7,5,8
+Lecture,CP,sept,7,6,5,16
+Lecture,CP,huit,8,18,16,13
+Lecture,CP,neuf,9,8,7,10
+Lecture,CP,dix,10,17,9,6
+Lecture,CP,onze,11,10,12,13
+Lecture,CP,douze,12,10,11,13
+Lecture,CP,treize,13,10,11,12
+Lecture,CP,quatorze,14,12,13,15
+Lecture,CP,quinze,15,16,17,13
+Lecture,CP,seize,16,17,15,13
+Lecture,CP,dix-sept,17,18,7,10
+Lecture,CP,dix-huit,18,8,10,4
+Lecture,CP,dix-neuf,19,9,10,90
+Lecture,CP,vingt,20,2,13,10
+Lecture,CP,trente,30,3,13,33
+Lecture,CP,quarante,40,4,14,44
+Lecture,CP,cinquante,50,5,60,16
+Lecture,CE1,soixante,60,6,17,70
+Lecture,CE1,soixante-dix,70,610,10,60
+Lecture,CE1,quatre-vingt,80,420,20,40
+Lecture,CE1,quatre-vingt-dix,90,20,410,80
+Lecture,CE1,cent,100,10,300,20
+Lecture,CE2,mille,1000,10,2000,100
+Vocabulaire,CE1,Identifier l'intru,gouter,stylo,papier,crayon
+Vocabulaire,CE1,Identifier l'intru,vélo,vache,loup,canard
+Vocabulaire,CE1,Identifier l'intru,violon,chaussure,pantalong,pyjama
+Vocabulaire,CE1,Identifier l'intru,chemise,tamboure,piano,flute
+Vocabulaire,CE1,Trouver l'intru,route,bicyclette,moto,automobile
+Vocabulaire,CE2,Identifier l'intru,dortoire,mouchoire,arosoire,rasoire
+Vocabulaire,CE2,Identifier l'intru,consoler,affectueux,rassurant,apesant
+Vocabulaire,CE2,Identifier l'intru,feter,réunir,rassembler,regrouper
+Vocabulaire,CE2,Identifier l'intru,ami,cousin,soeur,tante
+Vocabulaire,CM1,Identifier l'intru,arbre,tulipe ,rose,margurite
+Vocabulaire,CM1,Identifier l'intru,saladier,cerisier,poirier,pommier
+Vocabulaire,CM1,Identifier l'intru,aspirateur,danseur,chanteur,inspecteur
+Vocabulaire,CM1,Identifier l'intru,propreter,méchanceter,grossièreter ,férossiter
+Vocabulaire,CM1,Trouver l'intru,jour,crépuscule,nuit,obscurité
+Vocabulaire,CM2,Identifier l'intru,se consentrer,expliquer,interoger,s'exprimer
+Vocabulaire,CM2,Identifier l'intru,gentil,aimer,aprecier,preferer
+Vocabulaire,CM2,Identifier l'intru,canard,loup,chat,vache
+Vocabulaire,CM2,Identifier l'intru,calmer,silencieux,discrer,bavard
+Vocabulaire,CP,Personne qui soigne les autres,docteur,chanteur,facteur,éboueur
+Vocabulaire,CP,Il fabrique du pain,boulanger,chauffeur,pompier,infiermier
+Vocabulaire,CE1,Lieu où on range les livres,bibliothèque,cuisine,piscine,réfrigérateur
+Vocabulaire,CE1,On y trouve les définitions de mot,dictionnaire,album,band-dessiné,cahier de texte
+Vocabulaire,CE2,Terminer précipitament,baclé,soigné,repassé,travaillé
+Vocabulaire,CE2,A l'écoute,attentif,comprendre,pendantif,définir
+Vocabulaire,CM1,Régle de l'exercice,consigne,resultat,réponse,équere
+Vocabulaire,CM1,Animal qui vit dans l'eau,poisson,poison,possion,posion
+Vocabulaire,CM2,Elan vers le haut,saut,sot,seau,sauf
+Vocabulaire,CM2,Matière transparente,verre,vers,vert,vair
+Vocabulaire,CM2,De petite taille,cour,cours,court,course
+Lecture,CP,Trouve la sylabe avec le son a comme dans arbre,ba,ri,fo,vu
+Lecture,CP,Trouve la sylabe avec le son l comme dans livre,lu,mo,bu,fa
+Lecture,CP,Trouve la sylabe avec le son b comme dans balle,bo,na,tu,il
+Lecture,CE1,Trouve le mot avec le son i comme dans le mot piscine,écrire,maison,gomme,école
+Lecture,CE1,Trouve le mot avec le son on comme dans oncle,tomber,jouer,tonne,pomme
+Lecture,CE1,Trouve le mot avec le son ou comme dans route,moule,plume,pomme,poire
+Lecture,CE2,Trouve le mot avec le son an comme dans tante,emmener,manège,valise,montre
+Lecture,CE2,Trouve le mot avec le son k comme dans kangourou,marque,cerise,rapace,signe
+Lecture,CE2,Trouve le mot avec le son z comme dans zoo,raser,mangez,masse,mouse
+Lecture,CM1,Trouve le mot avec le son e,ramener,jouer,beure,père
+Lecture,CM1,Trouve le mot avec le son s,glaçon,ruser,carré,mots
+Lecture,CM1,Trouve le mot avec le son o,bateau,carte,heure,trouver
+Lecture,CM2,Trouve le mot avec le son gn,pannier,page,reine,cartable
+Lecture,CM2,Trouve le mot avec le son ill,bille,ville,fil,pille
+Lecture,CM2,Trouve le mot avec le son è,palais,descendant,lait,écrire
+Vocabulaire,CE1,Synonyme de groupe,équipe ,unique,rare,seul
+Vocabulaire,CE1,Synonyme de gentil,adorable,affreux,horrible,méchant
+Vocabulaire,CE1,Antonyme de bon,épouvantable,savoureux,délicieux,correcte
+Vocabulaire,CE2,Synonyme de gigantesque,enorme,minuscule,petit,étriquer
+Vocabulaire,CE2,Synonyme de chanson,comptine,valet,chanteur,charmeur
+Vocabulaire,CE2,Antonyme de ancien,novice,vieux,âgé,avancé
+Vocabulaire,CE2,Antonyme de claire,confus,compris,blanc,visible
+Vocabulaire,CM1,Synonyme de presser,dépécher,étirer,détendre,relacher
+Vocabulaire,CM1,Antonyme de demoiselle,damoiseau,femme,fille,dame
+Vocabulaire,CM1,Antonyme de donner,recevoir,transmettre,confier,offrir
+Vocabulaire,CM2,Synonyme de décamper,cavaler,courrir ,s'étendre,desinstaler
+Vocabulaire,CM2,Antonyme de trou,mont,niche,ouverture,fosse
+Vocabulaire,CM2,Antonyme de temps,épopé,durée,éclaircie,moment
+Vocabulaire,CM2,Antonyme de mince,abondant,étroit,maigre,filiforme
+Vocabulaire,CM1,Quel mot ne fait pas partie de la même famille,courage,courses,accourir,coureur
+Vocabulaire,CM1,Quel mot ne fait pas partie de la même famille,pelle,appeler,rappeler,appel
+Vocabulaire,CM1,Quel mot ne fait pas partie de la même famille,bateau,battoir,battre,battement
+Vocabulaire,CM1,Quel mot ne fait pas partie de la même famille,tarte,tarder,retard,retarder
+Vocabulaire,CM1,Quel mot ne fait pas partie de la même famille,couple,coupure,couper,découpe
+Vocabulaire,CM1,Quel mot n'a pas de préfixe ?,imaginaire,impropre,imprévu,imprudent
+Vocabulaire,CM1,Quel mot n'a pas de préfixe ?,province,proposer,provenir,projeter
+Vocabulaire,CM1,Quel mot n'a pas de préfixe ?,malicieux,malpropre,malsain,malheureux
+Vocabulaire,CM1,Quel mot n'a pas de préfixe ?,importance,imperfection,impossibilité,impureté
+Vocabulaire,CM1,Que signifie l'expression : Etre futer comme un renard,Etre très malin,Etre habiller en orange,Avoir les cheveux en desordre,Etre idiot
+Vocabulaire,CM2,Quel mot ne fait pas partie de la même famille,vent,vente,vendre,vendeur
+Vocabulaire,CM2,Quel mot ne fait pas partie de la même famille,bondé,bondir,bond,bondissant
+Vocabulaire,CM2,Quel mot ne fait pas partie de la même famille,allure,allumer,allumette,allumage
+Vocabulaire,CM2,Que signifie le mot en gras ? Jadis vivais une jeune fille hardie qui ne craignait pas d'aller qeule dans la forêt.,courageuse,paresseuse,lâche,grande
+Vocabulaire,CM2,Que signifie le mot en gras ? Un litige éclata entre Arthur qui voulait aller à la mer et Pierre qui préférait la piscine.,une dispute,un incendie,un rire,un orage
+Vocabulaire,CM2,Quel mot ne peut pas être remplacer par bois ?,table,foret,avales,ramure (corne)
