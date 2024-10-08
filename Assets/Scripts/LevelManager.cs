@@ -189,6 +189,15 @@ public class LevelManager : MonoBehaviour
         ClearAllLevels();
     }
 
+    public void StopLevel()
+    {
+        if (!IsCurrentLevelState("NotStarted"))
+        {
+            ChangeLevelState(LevelState.NotStarted);
+            ResetLevel();
+        }
+    }
+
     private void ClearAllLevels()
     {
         foreach (Transform child in _levelParent)

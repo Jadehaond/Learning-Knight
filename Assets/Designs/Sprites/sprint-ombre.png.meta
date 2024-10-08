@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: ed8be6f5e8ff64a4c98edbbbe578acd4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3162578479009896590
+    second: sprint-ombre_0
+  - first:
+      213: -6733215337903945692
+    second: sprint-ombre_1
+  - first:
+      213: -3254348174846724384
+    second: sprint-ombre_2
+  - first:
+      213: -4326868171637019970
+    second: sprint-ombre_3
+  - first:
+      213: -570775939037676373
+    second: sprint-ombre_4
+  - first:
+      213: 3439164791955010001
+    second: sprint-ombre_5
+  - first:
+      213: -7800953505044525150
+    second: sprint-ombre_6
+  - first:
+      213: -1233451041521540626
+    second: sprint-ombre_7
+  - first:
+      213: -8504276424865303177
+    second: sprint-ombre_8
+  - first:
+      213: 4643787624662445466
+    second: sprint-ombre_9
+  - first:
+      213: -5490072335181546624
+    second: sprint-ombre_10
+  - first:
+      213: 3882400854138599010
+    second: sprint-ombre_11
+  - first:
+      213: -2401612651116272121
+    second: sprint-ombre_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sprint-ombre_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 0
+        width: 977
+        height: 1024
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 277e15021a34c14d0800000000000000
+      internalID: -3162578479009896590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_1
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 854
+        width: 267
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42806040350de82a0800000000000000
+      internalID: -6733215337903945692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_2
+      rect:
+        serializedVersion: 2
+        x: 633
+        y: 787
+        width: 260
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e6f1d6c39b36d2d0800000000000000
+      internalID: -3254348174846724384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_3
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 725
+        width: 256
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebaa1a79250e3f3c0800000000000000
+      internalID: -4326868171637019970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_4
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 657
+        width: 279
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bacb15bbe423418f0800000000000000
+      internalID: -570775939037676373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_5
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 595
+        width: 258
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d13284282e5abf20800000000000000
+      internalID: 3439164791955010001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_6
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 532
+        width: 237
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2af8b7e4e127db390800000000000000
+      internalID: -7800953505044525150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_7
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 469
+        width: 236
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee1e54610d6e1eee0800000000000000
+      internalID: -1233451041521540626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_8
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 404
+        width: 259
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 775bc2036adbaf980800000000000000
+      internalID: -8504276424865303177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_9
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 339
+        width: 293
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9d2c54ad3c027040800000000000000
+      internalID: 4643787624662445466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_10
+      rect:
+        serializedVersion: 2
+        x: 664
+        y: 277
+        width: 275
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08bfd4e7c485fc3b0800000000000000
+      internalID: -5490072335181546624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_11
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 213
+        width: 276
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 266ba9ac10f01e530800000000000000
+      internalID: 3882400854138599010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprint-ombre_12
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 151
+        width: 290
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7066122a402cbaed0800000000000000
+      internalID: -2401612651116272121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 60aa0bbfed065ad44ae707587589bcb2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sprint-ombre_0: -3162578479009896590
+      sprint-ombre_1: -6733215337903945692
+      sprint-ombre_10: -5490072335181546624
+      sprint-ombre_11: 3882400854138599010
+      sprint-ombre_12: -2401612651116272121
+      sprint-ombre_2: -3254348174846724384
+      sprint-ombre_3: -4326868171637019970
+      sprint-ombre_4: -570775939037676373
+      sprint-ombre_5: 3439164791955010001
+      sprint-ombre_6: -7800953505044525150
+      sprint-ombre_7: -1233451041521540626
+      sprint-ombre_8: -8504276424865303177
+      sprint-ombre_9: 4643787624662445466
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

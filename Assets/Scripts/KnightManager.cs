@@ -181,12 +181,10 @@ public class KnightManager : MonoBehaviour
     private bool CheckSpaceAbove()
     {
         // Taille du personnage pour déterminer combien de place il lui faut
-        float characterHeight = 1.5f; // Hauteur à vérifier (ajustez selon la taille du personnage)
-        Vector2 rayStart = new Vector2(transform.position.x, transform.position.y); // Position de départ du Raycast
-        Vector2 rayDirection = Vector2.up;  // Direction vers le haut
-        float rayLength = characterHeight;  // Distance à vérifier
-
-        // Effectuer un Raycast vers le haut pour vérifier s'il y a un obstacle
+        float characterHeight = 75f; // Hauteur à vérifier
+        Vector2 rayStart = new Vector2(transform.position.x, transform.position.y);
+        Vector2 rayDirection = Vector2.up; 
+        float rayLength = characterHeight;
         RaycastHit2D hit = Physics2D.Raycast(rayStart, rayDirection, rayLength);
 
         // Si le Raycast ne touche rien, alors il y a de l'espace pour se relever
@@ -195,7 +193,11 @@ public class KnightManager : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, 0.1f, _groundLayerMask);
+        // Obtenez le rayon du bord (Edge Radius) du BoxCollider2D
+        float edgeRadius = _boxCollider.edgeRadius;
+        Vector2 boxSizeWithEdgeRadius = _boxCollider.bounds.size + new Vector3(edgeRadius * 2, edgeRadius * 2, 0);
+        return Physics2D.BoxCast(_boxCollider.bounds.center, boxSizeWithEdgeRadius, 0f, Vector2.down, 0.1f, _groundLayerMask);
+        //return Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, 0.1f, _groundLayerMask);
     }
 
     private void SetSpeed(float speed)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aeac8d1532438da4c83b6f01e0e6ce77
+guid: 8248978257a16f2418795d4ec93f6f92
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Germania
+  - Merienda
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
