@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af058317b156bf5059ec45f72f4f08ca, type: 3}
   m_Name: Level_2
   m_EditorClassIdentifier: 
-  _name: 1
+  _name: 2
   _description: 
   _levelPrefab: {fileID: 5195708419320839405, guid: 30ddc0644916c2c40a59e0419d568bfb, type: 3}
   _ennemies: []
-  _playerSpawn: {x: 5, y: 3.59, z: 0}
   _checkpoints: []
   _targetScore: 0
   _timeLimit: 0
