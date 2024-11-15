@@ -66,6 +66,16 @@ public class KnightManager : MonoBehaviour
     private void HandleMovement()
     {
         transform.position = new Vector2(transform.position.x + _currentSpeed, transform.position.y);
+        /*
+        if (IsGrounded())
+        {
+            Vector3 currentRotation = transform.eulerAngles;
+            if (currentRotation != Vector3.zero)
+            {
+                transform.eulerAngles = Vector3.zero;
+            }
+        }
+        */
     }
 
     public void SetUpFightScene()

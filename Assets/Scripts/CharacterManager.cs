@@ -89,20 +89,22 @@ public class CharacterManager : MonoBehaviour
 
         if (_gameCamera != null)
         {
-            Vector3 center;
-            if (IsEnemy) {
-                SetHealthBar();
-                center = GetCenterOfCameraPart(0.5f, 1f);
-            }
-            else 
-            {
-                center = GetCenterOfCameraPart(0f, 0.5f);
-            }
             _savedPositionNonFightable = this.transform.position;
             this.transform.GetComponent<Rigidbody2D>().gravityScale = 0;
             this.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
             this.transform.GetComponent<Rigidbody2D>().constraints |= RigidbodyConstraints2D.FreezeRotation;            
-            StartCoroutine(MoveObject(this.transform.position, center + new Vector3(-1f, -4f, 0f), 2f));
+           
+            Vector3 center;
+            if (IsEnemy) {
+                SetHealthBar();
+                center = GetCenterOfCameraPart(0.5f, 1f);     
+                StartCoroutine(MoveObject(this.transform.position, center + new Vector3(-1f, 0f, 0f), 2f));
+            }
+            else 
+            {
+                center = GetCenterOfCameraPart(0f, 0.5f);
+                StartCoroutine(MoveObject(this.transform.position, center + new Vector3(1f, -4f, 0f), 2f));
+            }
             StartCoroutine(RotateObject(this.transform.eulerAngles, center + new Vector3(0f, 0f, 0f), 2f));      
         }
         StartCoroutine(StartSetUpFightTimer(3f, true));
@@ -132,7 +134,7 @@ public class CharacterManager : MonoBehaviour
             StartCoroutine(MoveObject(center + new Vector3(-1f, -4f, 0f), FindClosestGroundPoint(), 2f));
             this.transform.GetComponent<Rigidbody2D>().gravityScale = 50;
             this.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-            this.transform.GetComponent<Rigidbody2D>().constraints &= ~RigidbodyConstraints2D.FreezeRotation;
+            this.transform.GetComponent<Rigidbody2D>().constraints |= RigidbodyConstraints2D.FreezeRotation;
            
         }
         StartCoroutine(StartSetUpFightTimer(3f, true));
