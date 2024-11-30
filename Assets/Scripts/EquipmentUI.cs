@@ -10,6 +10,7 @@ public class EquipmentUI : MonoBehaviour
     public Transform shieldsSection;
     public Transform bootsSection;
     public Transform armorsSection;
+    public Transform weaponsSection;
 
     public GameObject equipmentSlotPrefab;
 

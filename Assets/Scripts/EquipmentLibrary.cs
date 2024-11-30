@@ -9,4 +9,5 @@ public class EquipmentLibrary : ScriptableObject
     public List<EquipmentObject> shields;  // Liste des boucliers
     public List<EquipmentObject> boots;    // Liste des bottes
     public List<EquipmentObject> armors;   // Liste des armures
+    public List<EquipmentObject> weapons;   // Liste des armes
 }

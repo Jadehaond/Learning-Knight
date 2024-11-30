@@ -8,7 +8,7 @@ using TMPro;
 public class ObjectManager : MonoBehaviour
 {
 
-   private enum OBJETS { MOITIE, PLUME, BOUCLIER, APPEL, AUCUN }
+   private enum OBJETS { SOUDOYER, PLUME, CHRONO, ENVELOPPE, DE, QUITTEOUDOUBLE, IMMUNITE }
    private List<OBJETS> _objet = new List<OBJETS>();
    private List<int> _nombre = new List<int>();
         

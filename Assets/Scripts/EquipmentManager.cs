@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
-    public enum EquipmentType { Helmet, Shield, Boots, Armor }
+    public enum EquipmentType { Helmet, Shield, Boots, Armor, Weapon }
     public EquipmentLibrary equipmentLibrary;
 
     public List<EquipmentObject> unlockedHelmets = new List<EquipmentObject>();
     public List<EquipmentObject> unlockedShields = new List<EquipmentObject>();
     public List<EquipmentObject> unlockedBoots = new List<EquipmentObject>();
     public List<EquipmentObject> unlockedArmors = new List<EquipmentObject>();
+    public List<EquipmentObject> unlockedWeapons = new List<EquipmentObject>();
 
     void Start()
     {
@@ -39,6 +40,12 @@ public class EquipmentManager : MonoBehaviour
             if (armor.isDefault)
                 unlockedArmors.Add(armor);
         }
+
+        foreach (var weapon in equipmentLibrary.weapons)
+        {
+            if (weapon.isDefault)
+                unlockedWeapons.Add(weapon);
+        }
     }
 
     public void UnlockEquipment(EquipmentObject newEquipment)
@@ -61,6 +68,10 @@ public class EquipmentManager : MonoBehaviour
                 if (!unlockedArmors.Contains(newEquipment))
                     unlockedArmors.Add(newEquipment);
                 break;
+            case EquipmentType.Weapon:
+                if (!unlockedWeapons.Contains(newEquipment))
+                    unlockedWeapons.Add(newEquipment);
+                break;
         }
     }
 
@@ -78,6 +89,9 @@ public class EquipmentManager : MonoBehaviour
                 EquipBoots(newItem);
                 break;
             case EquipmentType.Armor:
+                EquipArmor(newItem);
+                break;
+            case EquipmentType.Weapon:
                 EquipArmor(newItem);
                 break;
         }
@@ -102,6 +116,11 @@ public class EquipmentManager : MonoBehaviour
     private void EquipArmor(EquipmentObject newArmor)
     {
         Debug.Log("Équipé : " + newArmor.itemName);
+    }
+
+    private void EquipWeapon(EquipmentObject newWeapon)
+    {
+        Debug.Log("Équipé : " + newWeapon.itemName);
     }
 
 }
