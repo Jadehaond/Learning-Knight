@@ -14,7 +14,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private LayerMask _groundLayerMask;
 
     [Header("State Variables")]
-    private Transform _healthpoints = null;
+    //private Transform _healthpoints = null;
     private Vector3 _savedPositionNonFightable;
     [SerializeField] private GameObject _healthObject = null;
     [SerializeField] private Slider _healthBar = null;

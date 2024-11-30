@@ -11,8 +11,8 @@ public class UIGameManager : MonoBehaviour
     [SerializeField] private GameObject canvasAth;
     [SerializeField] private GameObject canvasQuestions;
 
-     private enum UIState { Options, Controls, Questions, Results, Resume }
-    private UIState _currentState = UIState.Controls;
+    private enum UIState { Options, Controls, Questions, Results, Resume }
+    //private UIState _currentState = UIState.Controls;
     [SerializeField] private Timer _timer;
     [SerializeField] private TextMeshProUGUI _timerIntroText;
     private Coroutine _startIntroTimerCoroutine;
