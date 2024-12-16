@@ -215,7 +215,7 @@ public class QuestionManager : MonoBehaviour
         _isQuestionDisplayed = true;
     }
 
-    private void DisplayResponses()
+    public void DisplayResponses()
     {
         _ans1.GetComponentInChildren<TextMeshProUGUI>().text = _responses[0];
         _ans2.GetComponentInChildren<TextMeshProUGUI>().text = _responses[1];
@@ -236,13 +236,12 @@ public class QuestionManager : MonoBehaviour
         _isQuestionDisplayed = false;
     }
     
-    public void UseEnDeux()
+    public void LoadNextQuestion() 
     {
-        if (_isResponsesDisplayed && !_isQuestionDisplayed && _timer.TimerIsRunning) 
-        {
-            // Call some functionality on the knight's ObjectManager
-            // _knight.GetComponent<ObjectManager>().run(Reponses, vraieReponse);
-            DisplayResponses();
-        }
+        StartQuestion();
     }
+
+    // -- object interactions -- //
+
+
 }

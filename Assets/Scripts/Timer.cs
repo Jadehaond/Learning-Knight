@@ -45,6 +45,14 @@ public class Timer : MonoBehaviour
     	_timerIsRunning = false;
         _timeRemaining = 0f;
     }
+
+    public void AddTimer(float number) 
+    {
+        if (_timerIsRunning)
+        {
+    	    _timeRemaining += number;
+        }
+    }
         
     void DisplayTime(float timeToDisplay)
     {

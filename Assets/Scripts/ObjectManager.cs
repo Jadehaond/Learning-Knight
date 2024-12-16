@@ -5,108 +5,141 @@ using static UnityEngine.Random;
 using UnityEngine.UI;
 using TMPro;
 
+/**
+Associer les prefabs :
+    Ajoutez vos prefabs bouton dans la liste objectPrefabs dans l'inspecteur Unity.
+    L'ordre des prefabs doit correspondre à l'ordre de l'énumération OBJETS. Par exemple :
+    Index 0 → SOUDEYER
+    Index 1 → PLUME
+    Index 2 → CHRONO
+*/
+
 public class ObjectManager : MonoBehaviour
 {
-    /*
-    Plume : Affiche des pourcentages simulés sur les réponses.
-    Pièce : Supprime deux mauvaises réponses.
-    Dé : Change la question.
-    Enveloppe : Fournit un indice.
-    Médaillon : Active une immunité temporaire.
-    Chronomètre : Ajoute du temps au joueur.
-    Quitte ou double : Applique un coup critique ou une pénalité.
-    */
+    private Dictionary<OBJETS, string> objetDescriptions = new Dictionary<OBJETS, string>
+    {
+        { OBJETS.SOUDOYER, "Soudoie pour obtenir un avantage." },
+        { OBJETS.PLUME, "Affiche des pourcentages simulés." },
+        { OBJETS.CHRONO, "Ajoute du temps au chronomètre." },
+        { OBJETS.ENVELOPPE, "Fournit un indice pour la question." },
+        { OBJETS.DE, "Change la question actuelle." },
+        { OBJETS.QUITTEOUDOUBLE, "Double ou rien pour le joueur." },
+        { OBJETS.IMMUNITE, "Active une immunité temporaire." }
+    };
+    
+    private GameManager _instance;
+    private GameManager GameManager => _instance ??= GameManager.Instance;
 
-   private enum OBJETS { SOUDOYER, PLUME, CHRONO, ENVELOPPE, DE, QUITTEOUDOUBLE, IMMUNITE }
-   private List<OBJETS> _objet = new List<OBJETS>();
-   private List<int> _nombre = new List<int>();
-        
-   private int nb = 1;
+    public enum OBJETS { SOUDOYER, PLUME, CHRONO, ENVELOPPE, DE, QUITTEOUDOUBLE, IMMUNITE }
+    private List<OBJETS> _objet = new List<OBJETS>();
+    private bool isImmune = false;
+    [SerializeField] private Timer _timer;
+    [SerializeField] private GameObject menuContainer; // Conteneur du menu (Panel ou Scroll View Content)
+    [SerializeField] private List<GameObject> objectPrefabs; // Liste des prefabs (dans l'ordre des OBJETS)
+    private Dictionary<OBJETS, GameObject> objectPrefabMap = new Dictionary<OBJETS, GameObject>();
+    private Dictionary<OBJETS, Sprite> objectIconMap;
+    [SerializeField] private List<Sprite> objectIcons;
    
-   public GameObject objs;
-   
-   public int NbEnDeux {
-        get
+    private void Start()
+    {
+        objectIconMap = new Dictionary<OBJETS, Sprite>();
+        for (int i = 0; i < objectIcons.Count && i < System.Enum.GetValues(typeof(OBJETS)).Length; i++)
         {
-            return PlayerPrefs.GetInt(".NbEnDeux");
+            objectIconMap[(OBJETS)i] = objectIcons[i];
         }
-        set
+
+        PopulateMenu();
+    }     
+
+    private void PopulateMenu()
+    {
+        foreach (Transform child in menuContainer.transform)
         {
-            PlayerPrefs.SetInt(".NbEnDeux", nb);
+            Destroy(child.gameObject);
         }
-    }
-    
-    void Awake()
-    {
-    	nb = 2;
-    	objs = GameObject.Find("Btn_Objects");
-    }
-    
-    void Update()
-    {
-    	objs.GetComponentInChildren<TextMeshProUGUI>().text = ""+nb;
-    	if (nb <= 0) objs.GetComponent<Image>().color = new Color(0.6f,0.6f,0.6f,0.6862745f);
-    }
-        
-    public void addObject()
-    {
-    	if (nb < 5) nb = nb+1;
-    }
-    
-    public void removeObject()
-    {
-    	if (nb > 0) nb = nb-1;
-    }
 
-    public string[] run(string[] Reponses, int vraie)
-    {
-        //Enlève deux réponses fausses à l'affichage
-    	if (nb > 0)
-    	{
-	    	int rand = Range(0,4);
-	    	if (rand == vraie) rand = rand + 1;
-	    	if (rand == 4) rand = 0;
-	    	if (Reponses[rand] == "") rand = rand + 1;
-	    	if (rand == 4) rand = 0;
-	    	Reponses[rand] = "";
-	    	
-	    	rand = Range(0,4);
-	    	if (rand == vraie) rand = rand + 1;
-	    	if (rand == 4) rand = 0;
-	    	if (Reponses[rand] == "") rand = rand + 1;
-	    	if (rand == 4) rand = 0;
-	    	Reponses[rand] = "";   
-	    	
-	    	removeObject(); 	
-       }            	
-       return Reponses;
-    }
-
-    public string[] runPiece(string[] Reponses, int vraie)
-    {
-        if (nb > 0)
+        foreach (OBJETS objet in _objet)
         {
-            List<int> indicesFaux = new List<int>();
-
-            for (int i = 0; i < Reponses.Length; i++)
+            if (objectPrefabMap.ContainsKey(objet))
             {
-                if (i != vraie && !string.IsNullOrEmpty(Reponses[i]))
-                    indicesFaux.Add(i);
+                GameObject button = Instantiate(objectPrefabMap[objet], menuContainer.transform);
+                button.GetComponent<Button>().onClick.AddListener(() => UseObject(objet));
             }
-
-            // Supprimer deux mauvaises réponses au hasard
-            for (int i = 0; i < 2 && indicesFaux.Count > 0; i++)
+            else
             {
-                int indexToRemove = indicesFaux[Range(0, indicesFaux.Count)];
-                Reponses[indexToRemove] = "";
-                indicesFaux.Remove(indexToRemove);
+                Debug.LogWarning($"Prefab non défini pour l'objet : {objet}");
             }
-
-            removeObject();
         }
-        return Reponses;
     }
 
+    private void ConfigurePrefab(GameObject button, OBJETS objet)
+    {
+        TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
+        if (text != null)
+        {
+            text.text = objet.ToString();
+        }
+
+        Image icon = button.transform.Find("Icon").GetComponent<Image>();
+        if (icon != null)
+        {
+            // Assignez une icône spécifique
+            icon.sprite = GetIconForObject(objet);
+        }
+    }
+
+    private Sprite GetIconForObject(OBJETS objet)
+    {
+        return objectIconMap.TryGetValue(objet, out Sprite icon) ? icon : null;
+    }
+
+    private void UseObject(OBJETS objet)
+    {
+        if (!_objet.Contains(objet)) 
+        {
+            Debug.LogWarning($"Tentative d'utilisation d'un objet non disponible : {objet}");
+            return;
+        }
+
+        switch (objet)
+        {
+            case OBJETS.SOUDOYER:
+                Debug.Log("Utilisation de l'objet Soudoie.");
+                break;
+            case OBJETS.PLUME:
+                Debug.Log("Utilisation de l'objet Plume.");
+                break;
+            case OBJETS.CHRONO:
+                Debug.Log("Ajout de temps avec Chrono.");
+                runChrono(_timer);
+                break;
+            case OBJETS.ENVELOPPE:
+                Debug.Log("Indice affiché avec Enveloppe.");
+                break;
+            case OBJETS.DE:
+                Debug.Log("Question changée avec Dé.");
+                runDe(GameManager.QuestionManager);
+                break;
+            case OBJETS.QUITTEOUDOUBLE:
+                Debug.Log("Quitte ou double activé.");
+                break;
+            case OBJETS.IMMUNITE:
+                Debug.Log("Immunité activée.");
+                runImmunite();
+                break;
+        }
+    }
+    
+    public void addObject(OBJETS objet)
+    {
+    	_objet.Add(objet);
+    }
+    
+    public void removeObject(OBJETS objet)
+    {
+    	_objet.Remove(objet);
+    }
+    
     public int[] runPlume(int vraie)
     {
         int[] percentages = new int[4];
@@ -116,7 +149,7 @@ public class ObjectManager : MonoBehaviour
         percentages[vraie] = Range(40, 60); // Entre 40% et 60%
         totalPercentage -= percentages[vraie];
 
-        // Répartir le reste entre les mauvaises réponses
+        // Répartir le reste entre les mauvaises réponses --> Faire des pourcentages dofférents entre les mauvaises réponses
         for (int i = 0; i < percentages.Length; i++)
         {
             if (i != vraie)
@@ -126,20 +159,42 @@ public class ObjectManager : MonoBehaviour
             }
         }
 
-        // Assurez-vous que la somme est égale à 100
+        // La somme est égale à 100
         percentages[Range(0, 4)] += totalPercentage;
 
+        removeObject(OBJETS.PLUME);
+        GameManager.QuestionManager.DisplayResponses();
         return percentages;
     }
-
-    /*public void runDe(QuestionManager questionManager)
+    
+    public string[] runPiece(string[] Reponses, int vraie)
     {
-        if (nb > 0)
+        List<int> indicesFaux = new List<int>();
+
+        for (int i = 0; i < Reponses.Length; i++)
         {
-            questionManager.LoadNextQuestion();
-            removeObject();
+            if (i != vraie && !string.IsNullOrEmpty(Reponses[i]))
+                indicesFaux.Add(i);
         }
-    }*/
+
+        // Supprimer deux mauvaises réponses au hasard
+        for (int i = 0; i < 2 && indicesFaux.Count > 0; i++)
+        {
+            int indexToRemove = indicesFaux[Range(0, indicesFaux.Count)];
+            Reponses[indexToRemove] = "";
+            indicesFaux.Remove(indexToRemove);
+        }
+
+        removeObject(OBJETS.SOUDOYER);
+        GameManager.QuestionManager.DisplayResponses();
+        return Reponses;
+    }
+
+    public void runDe(QuestionManager questionManager)
+    {
+        GameManager.QuestionManager.LoadNextQuestion();
+        removeObject(OBJETS.DE);
+    }
 
     /*public string runEnveloppe(Question currentQuestion)
     {
@@ -152,16 +207,11 @@ public class ObjectManager : MonoBehaviour
         return "";
     }*/
 
-    private bool isImmune = false;
-
     public void runImmunite()
     {
-        if (nb > 0)
-        {
-            isImmune = true;
-            removeObject();
-            StartCoroutine(RemoveImmunityAfterTime(10f)); // Immunité pendant 10 secondes
-        }
+        isImmune = true;
+        removeObject(OBJETS.IMMUNITE);
+        StartCoroutine(RemoveImmunityAfterTime(10f)); // Immunité pendant 10 secondes
     }
 
     private IEnumerator RemoveImmunityAfterTime(float seconds)
@@ -170,27 +220,10 @@ public class ObjectManager : MonoBehaviour
         isImmune = false;
     }
 
-    //Chnager la manière dont les dégats sont pris ?
-    /* 
-    public void TakeDamage(int damage)
-    {
-        if (isImmune)
-        {
-            Debug.Log("Dégâts bloqués !");
-            return;
-        }
-
-        currentHealth -= damage;
-    }
-    */
-
     public void runChrono(Timer timer)
     {
-        if (nb > 0)
-        {
-            //timer.AddTime(10); // Ajoute 10 secondes
-            removeObject();
-        }
+        _timer.AddTimer(3f);
+        removeObject(OBJETS.CHRONO);
     }
 
     /*public void runQuitteOuDouble(bool correctAnswer, Player player)
@@ -229,6 +262,5 @@ public class ObjectManager : MonoBehaviour
             Debug.Log("Défense réduite de : " + amount);
         }
     */
-
 
 }
