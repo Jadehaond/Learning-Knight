@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public PauseManager PauseManager => _pauseManager;
     [SerializeField] private QuestionManager _questionManager;
     public QuestionManager QuestionManager => _questionManager;
+    [SerializeField] private ObjectManager _objectManager;
+    public ObjectManager ObjectManager => _objectManager;
 	
     void Awake()
     {

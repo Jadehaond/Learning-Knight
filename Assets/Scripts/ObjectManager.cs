@@ -1,101 +1,166 @@
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using static UnityEngine.Random;
-using UnityEngine.UI;
 using TMPro;
-
-/**
-Associer les prefabs :
-    Ajoutez vos prefabs bouton dans la liste objectPrefabs dans l'inspecteur Unity.
-    L'ordre des prefabs doit correspondre à l'ordre de l'énumération OBJETS. Par exemple :
-    Index 0 → SOUDEYER
-    Index 1 → PLUME
-    Index 2 → CHRONO
-*/
 
 public class ObjectManager : MonoBehaviour
 {
-    private Dictionary<OBJETS, string> objetDescriptions = new Dictionary<OBJETS, string>
-    {
-        { OBJETS.SOUDOYER, "Soudoie pour obtenir un avantage." },
-        { OBJETS.PLUME, "Affiche des pourcentages simulés." },
-        { OBJETS.CHRONO, "Ajoute du temps au chronomètre." },
-        { OBJETS.ENVELOPPE, "Fournit un indice pour la question." },
-        { OBJETS.DE, "Change la question actuelle." },
-        { OBJETS.QUITTEOUDOUBLE, "Double ou rien pour le joueur." },
-        { OBJETS.IMMUNITE, "Active une immunité temporaire." }
-    };
-    
     private GameManager _instance;
     private GameManager GameManager => _instance ??= GameManager.Instance;
 
-    public enum OBJETS { SOUDOYER, PLUME, CHRONO, ENVELOPPE, DE, QUITTEOUDOUBLE, IMMUNITE }
-    private List<OBJETS> _objet = new List<OBJETS>();
-    private bool isImmune = false;
-    [SerializeField] private Timer _timer;
-    [SerializeField] private GameObject menuContainer; // Conteneur du menu (Panel ou Scroll View Content)
-    [SerializeField] private List<GameObject> objectPrefabs; // Liste des prefabs (dans l'ordre des OBJETS)
+    [SerializeField] private RectTransform camembertContainer; // Conteneur circulaire
+    [SerializeField] private GameObject menuContainer; // Conteneur des boutons
+    [SerializeField] private List<GameObject> objectPrefabs; // Liste des prefabs dans l'ordre de l'énum OBJETS
+    [SerializeField] private List<Sprite> objectIcons; // Liste des icônes associées aux OBJETS
+
     private Dictionary<OBJETS, GameObject> objectPrefabMap = new Dictionary<OBJETS, GameObject>();
-    private Dictionary<OBJETS, Sprite> objectIconMap;
-    [SerializeField] private List<Sprite> objectIcons;
-   
+    private Dictionary<OBJETS, Sprite> objectIconMap = new Dictionary<OBJETS, Sprite>();
+    private List<OBJETS> activeObjects = new List<OBJETS>(); // Liste des objets actifs
+    private List<Image> parts = new List<Image>(); // Images des parts circulaires
+
+    public enum OBJETS { SOUDOYER, PLUME, CHRONO, ENVELOPPE, DE, QUITTEOUDOUBLE }
+
+    [SerializeField] private Timer _timer;
+
     private void Start()
     {
-        objectIconMap = new Dictionary<OBJETS, Sprite>();
+        InitializeObjectMappings();
+        PopulateMenu();
+        UpdateCamembert();
+    }
+
+    private void InitializeObjectMappings()
+    {
+        // Associer les prefabs aux OBJETS
+        for (int i = 0; i < objectPrefabs.Count && i < System.Enum.GetValues(typeof(OBJETS)).Length; i++)
+        {
+            objectPrefabMap[(OBJETS)i] = objectPrefabs[i];
+        }
+
+        // Associer les icônes aux OBJETS
         for (int i = 0; i < objectIcons.Count && i < System.Enum.GetValues(typeof(OBJETS)).Length; i++)
         {
             objectIconMap[(OBJETS)i] = objectIcons[i];
         }
-
-        PopulateMenu();
-    }     
+    }
 
     private void PopulateMenu()
     {
+        // Supprimer les anciens boutons
         foreach (Transform child in menuContainer.transform)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (OBJETS objet in _objet)
+        // Créer un bouton pour chaque objet actif
+        foreach (OBJETS objet in activeObjects)
         {
-            if (objectPrefabMap.ContainsKey(objet))
+            if (objectPrefabMap.TryGetValue(objet, out GameObject prefab))
             {
-                GameObject button = Instantiate(objectPrefabMap[objet], menuContainer.transform);
-                button.GetComponent<Button>().onClick.AddListener(() => UseObject(objet));
-            }
-            else
-            {
-                Debug.LogWarning($"Prefab non défini pour l'objet : {objet}");
+                GameObject button = Instantiate(prefab, menuContainer.transform);
+                ConfigureButton(button, objet);
             }
         }
     }
 
-    private void ConfigurePrefab(GameObject button, OBJETS objet)
+    private void ConfigureButton(GameObject button, OBJETS objet)
     {
+        // Ajouter un texte descriptif
         TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
         if (text != null)
         {
             text.text = objet.ToString();
         }
 
+        // Ajouter une icône
         Image icon = button.transform.Find("Icon").GetComponent<Image>();
-        if (icon != null)
+        if (icon != null && objectIconMap.TryGetValue(objet, out Sprite sprite))
         {
-            // Assignez une icône spécifique
-            icon.sprite = GetIconForObject(objet);
+            icon.sprite = sprite;
+        }
+
+        // Assigner une action au bouton
+        Button btnComponent = button.GetComponent<Button>();
+        if (btnComponent != null)
+        {
+            btnComponent.onClick.AddListener(() => UseObject(objet));
         }
     }
 
-    private Sprite GetIconForObject(OBJETS objet)
+    private void UpdateCamembert()
     {
-        return objectIconMap.TryGetValue(objet, out Sprite icon) ? icon : null;
+        // Supprimer les parts existantes
+        foreach (var part in parts)
+        {
+            Destroy(part.gameObject);
+        }
+        parts.Clear();
+
+        int elementCount = activeObjects.Count;
+        if (elementCount == 0) return;
+
+        // Calculer l'angle de chaque part
+        float anglePerPart = 360f / elementCount;
+
+        for (int i = 0; i < elementCount; i++)
+        {
+            OBJETS objet = activeObjects[i];
+
+            // Créer une Image pour chaque part
+            GameObject partObject = new GameObject($"Part_{i}", typeof(RectTransform), typeof(Image));
+            partObject.transform.SetParent(camembertContainer, false);
+
+            // Configurer le RectTransform
+            RectTransform partTransform = partObject.GetComponent<RectTransform>();
+            partTransform.sizeDelta = camembertContainer.sizeDelta; // Même taille que le conteneur
+            partTransform.localRotation = Quaternion.Euler(0, 0, -anglePerPart * i);
+
+            // Configurer l'Image
+            Image partImage = partObject.GetComponent<Image>();
+            partImage.type = Image.Type.Filled;
+            partImage.fillMethod = Image.FillMethod.Radial360;
+            partImage.fillAmount = anglePerPart / 360f;
+
+            // Ajouter une icône si disponible
+            if (objectIconMap.TryGetValue(objet, out Sprite icon))
+            {
+                partImage.sprite = icon;
+                partImage.color = Color.white; // Ajuster pour afficher correctement l'icône
+            }
+            else
+            {
+                partImage.color = Random.ColorHSV(); // Couleur aléatoire si aucune icône
+            }
+
+            parts.Add(partImage);
+        }
+    }
+
+    public void AddObject(OBJETS objet)
+    {
+        if (!activeObjects.Contains(objet))
+        {
+            activeObjects.Add(objet);
+            PopulateMenu();
+            UpdateCamembert();
+        }
+    }
+
+    public void RemoveObject(OBJETS objet)
+    {
+        if (activeObjects.Contains(objet))
+        {
+            activeObjects.Remove(objet);
+            PopulateMenu();
+            UpdateCamembert();
+        }
     }
 
     private void UseObject(OBJETS objet)
     {
-        if (!_objet.Contains(objet)) 
+        if (!activeObjects.Contains(objet)) 
         {
             Debug.LogWarning($"Tentative d'utilisation d'un objet non disponible : {objet}");
             return;
@@ -104,44 +169,44 @@ public class ObjectManager : MonoBehaviour
         switch (objet)
         {
             case OBJETS.SOUDOYER:
+                //runPiece();
                 Debug.Log("Utilisation de l'objet Soudoie.");
                 break;
             case OBJETS.PLUME:
+                runPlume();
                 Debug.Log("Utilisation de l'objet Plume.");
                 break;
             case OBJETS.CHRONO:
                 Debug.Log("Ajout de temps avec Chrono.");
-                runChrono(_timer);
+                runChrono();
                 break;
             case OBJETS.ENVELOPPE:
                 Debug.Log("Indice affiché avec Enveloppe.");
                 break;
             case OBJETS.DE:
                 Debug.Log("Question changée avec Dé.");
-                runDe(GameManager.QuestionManager);
+                runDe();
                 break;
             case OBJETS.QUITTEOUDOUBLE:
                 Debug.Log("Quitte ou double activé.");
                 break;
-            case OBJETS.IMMUNITE:
-                Debug.Log("Immunité activée.");
-                runImmunite();
-                break;
         }
+        RemoveObject(objet);
     }
     
     public void addObject(OBJETS objet)
     {
-    	_objet.Add(objet);
+    	activeObjects.Add(objet);
     }
     
     public void removeObject(OBJETS objet)
     {
-    	_objet.Remove(objet);
+    	activeObjects.Remove(objet);
     }
     
-    public int[] runPlume(int vraie)
+    public int[] runPlume()
     {
+        int vraie = GameManager.QuestionManager.CorrectAnswerIndex;
         int[] percentages = new int[4];
         int totalPercentage = 100;
 
@@ -162,13 +227,14 @@ public class ObjectManager : MonoBehaviour
         // La somme est égale à 100
         percentages[Range(0, 4)] += totalPercentage;
 
-        removeObject(OBJETS.PLUME);
         GameManager.QuestionManager.DisplayResponses();
         return percentages;
     }
     
-    public string[] runPiece(string[] Reponses, int vraie)
+    public string[] runPiece()
     {
+        string[] Reponses = GameManager.QuestionManager.Reponses;
+        int vraie = GameManager.QuestionManager.CorrectAnswerIndex;
         List<int> indicesFaux = new List<int>();
 
         for (int i = 0; i < Reponses.Length; i++)
@@ -185,15 +251,13 @@ public class ObjectManager : MonoBehaviour
             indicesFaux.Remove(indexToRemove);
         }
 
-        removeObject(OBJETS.SOUDOYER);
         GameManager.QuestionManager.DisplayResponses();
         return Reponses;
     }
 
-    public void runDe(QuestionManager questionManager)
+    public void runDe()
     {
         GameManager.QuestionManager.LoadNextQuestion();
-        removeObject(OBJETS.DE);
     }
 
     /*public string runEnveloppe(Question currentQuestion)
@@ -207,23 +271,9 @@ public class ObjectManager : MonoBehaviour
         return "";
     }*/
 
-    public void runImmunite()
-    {
-        isImmune = true;
-        removeObject(OBJETS.IMMUNITE);
-        StartCoroutine(RemoveImmunityAfterTime(10f)); // Immunité pendant 10 secondes
-    }
-
-    private IEnumerator RemoveImmunityAfterTime(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        isImmune = false;
-    }
-
-    public void runChrono(Timer timer)
+    public void runChrono()
     {
         _timer.AddTimer(3f);
-        removeObject(OBJETS.CHRONO);
     }
 
     /*public void runQuitteOuDouble(bool correctAnswer, Player player)
@@ -240,8 +290,6 @@ public class ObjectManager : MonoBehaviour
                 //player.ReduceDefense(10); // Réduction de défense
                 Debug.Log("Perte de défense !");
             }
-
-            removeObject();
         }
     }*/
 
@@ -262,5 +310,5 @@ public class ObjectManager : MonoBehaviour
             Debug.Log("Défense réduite de : " + amount);
         }
     */
-
+  
 }

@@ -1020,7 +1020,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -276}
+  m_AnchoredPosition: {x: 0, y: -258}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &99762879
@@ -6955,7 +6955,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -138}
+  m_AnchoredPosition: {x: 0, y: -129}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &864561012
@@ -11441,6 +11441,7 @@ GameObject:
   - component: {fileID: 1415743439}
   - component: {fileID: 1415743444}
   - component: {fileID: 1415743445}
+  - component: {fileID: 1415743446}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11479,6 +11480,7 @@ MonoBehaviour:
   _uiManager: {fileID: 1415743445}
   _pauseManager: {fileID: 1415743440}
   _questionManager: {fileID: 1415743439}
+  _objectManager: {fileID: 1415743446}
 --- !u!114 &1415743439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11584,6 +11586,30 @@ MonoBehaviour:
   - elementName: Menu
     elementReference: {fileID: 815707984}
   _timerIntroText: {fileID: 2076920072}
+--- !u!114 &1415743446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415743436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3670d4691ab46397abdf795cb011000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camembertContainer: {fileID: 99762878}
+  menuContainer: {fileID: 99762877}
+  objectPrefabs:
+  - {fileID: 99762877}
+  objectIcons:
+  - {fileID: 21300000, guid: 8d875e27b9572d24c96c0d2b76ebf31d, type: 3}
+  - {fileID: 761799014684112897, guid: d8e5c18b3db2f124885575742e5ff8db, type: 3}
+  - {fileID: 21300000, guid: b8d308d08e7d8c94ba60eecbb1b092e8, type: 3}
+  - {fileID: 21300000, guid: f7fc7828ef4195942b7707ec3175bf37, type: 3}
+  - {fileID: 21300000, guid: 625aa7870ab4fee4799106edfdb7e889, type: 3}
+  - {fileID: -1945157823429785087, guid: 08d556d0e13bb8b479775984ff8ae206, type: 3}
+  _timer: {fileID: 1185759504}
 --- !u!1 &1416517987
 GameObject:
   m_ObjectHideFlags: 0
@@ -12862,7 +12888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1566946721
 RectTransform:
   m_ObjectHideFlags: 0

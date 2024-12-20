@@ -7,6 +7,9 @@ using TMPro;
 
 public class QuestionManager : MonoBehaviour
 {
+    private GameManager _instance;
+    private GameManager GameManager => _instance ??= GameManager.Instance;
+
     private const string MathsFilePath = "/Resources/banque-questions-mathématiques.csv";
     private const string FrenchFilePath = "/Resources/banque-questions-français.csv";
     [SerializeField] private Button _ans1;
@@ -21,12 +24,17 @@ public class QuestionManager : MonoBehaviour
     private string _type;
     private string _genre;
     private string _niveau;
-    private string[] _responses = new string[4];
+    private string[] _reponses = new string[4];
+    public string[] Reponses
+    {
+        get => _reponses;
+    }
     private string _currentQuestion;
     private int _correctAnswerIndex;
-
-    private GameManager _instance;
-    private GameManager GameManager => _instance ??= GameManager.Instance;
+    public int CorrectAnswerIndex
+    {
+        get => _correctAnswerIndex;
+    }
 
     private bool _isFirstQuestionDisplayed = false;
     private bool _isQuestionDisplayed = false;
@@ -197,13 +205,13 @@ public class QuestionManager : MonoBehaviour
         _currentQuestion = lineData[2];
 
         _correctAnswerIndex = UnityEngine.Random.Range(0, 4);
-        _responses[_correctAnswerIndex] = lineData[3];
+        _reponses[_correctAnswerIndex] = lineData[3];
 
         int responseIndex = (_correctAnswerIndex + 1) % 4;
 
         for (int i = 4; i < 7; i++)
         {
-            _responses[responseIndex] = lineData[i];
+            _reponses[responseIndex] = lineData[i];
             responseIndex = (responseIndex + 1) % 4;
             
         }
@@ -217,10 +225,10 @@ public class QuestionManager : MonoBehaviour
 
     public void DisplayResponses()
     {
-        _ans1.GetComponentInChildren<TextMeshProUGUI>().text = _responses[0];
-        _ans2.GetComponentInChildren<TextMeshProUGUI>().text = _responses[1];
-        _ans3.GetComponentInChildren<TextMeshProUGUI>().text = _responses[2];
-        _ans4.GetComponentInChildren<TextMeshProUGUI>().text = _responses[3];
+        _ans1.GetComponentInChildren<TextMeshProUGUI>().text = _reponses[0];
+        _ans2.GetComponentInChildren<TextMeshProUGUI>().text = _reponses[1];
+        _ans3.GetComponentInChildren<TextMeshProUGUI>().text = _reponses[2];
+        _ans4.GetComponentInChildren<TextMeshProUGUI>().text = _reponses[3];
         _isResponsesDisplayed = true;
         _isQuestionDisplayed = false;
     }

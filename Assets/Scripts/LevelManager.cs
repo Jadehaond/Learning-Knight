@@ -60,19 +60,19 @@ public class LevelManager : MonoBehaviour
     {
         switch (newState)
         { case "NotStarted":
-            ChangeLevelState(LevelState.NotStarted);
+                ChangeLevelState(LevelState.NotStarted);
                 break;
             case "Setup":
-            ChangeLevelState(LevelState.Setup);
+                ChangeLevelState(LevelState.Setup);
                 break;
             case "Running":
-            ChangeLevelState(LevelState.Running);
+                ChangeLevelState(LevelState.Running);
                 break;
             case "Fighting":
-            ChangeLevelState(LevelState.Fighting);
+                ChangeLevelState(LevelState.Fighting);
                 break;
             case "Finished":
-            ChangeLevelState(LevelState.Finished);
+                ChangeLevelState(LevelState.Finished);
                 break;
         }
     }
@@ -172,6 +172,8 @@ public class LevelManager : MonoBehaviour
 
     public void ReloadLevel()
     {
+        EndFight(); // pour defreeeze la position du chevalier
+        StopLevel();
         ChangeLevelState(LevelState.Setup);
     }
 
@@ -183,8 +185,8 @@ public class LevelManager : MonoBehaviour
 
     private void ResetLevel()
     {
-        _knight.SetActive(false);
         _knight.GetComponent<CharacterManager>().ResetCharacterState();
+        _knight.SetActive(false);
         GameManager.QuestionManager.Reset();
         ClearAllLevels();
     }
@@ -194,7 +196,6 @@ public class LevelManager : MonoBehaviour
         if (!IsCurrentLevelState("NotStarted"))
         {
             ChangeLevelState(LevelState.NotStarted);
-            ResetLevel();
         }
     }
 
