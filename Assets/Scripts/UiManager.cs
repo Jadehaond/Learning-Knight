@@ -48,7 +48,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         SetUIState(UIState.Background);
-        _fadeCoroutine = StartCoroutine(DisplayIntro());
+        //_fadeCoroutine = StartCoroutine(DisplayIntro()); //Commenser par l'intro
+        SetUIState(UIState.Menu); //Skippe l'intro
     }
 
     public bool IsCurrentState(string stateName)

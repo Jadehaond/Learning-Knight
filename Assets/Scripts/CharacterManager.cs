@@ -23,12 +23,23 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float _maxHealth = 10;
     public float MaxHealth => _maxHealth;
     private Camera _gameCamera;
+
+    private float attaque;
+    private float defense;
+    private float vitesse;
     #endregion
 
-     void Start()
+    void Start()
     {
         _value = _maxHealth;
         if (_healthBar != null) _healthBar.value = _maxHealth;
+    }
+
+    private void InitializeCharacterStats()
+    {
+        attaque = 5.0f;
+        defense = 5.0f;
+        vitesse =1.2f;
     }
 
     public void SetHealthBar()
@@ -69,6 +80,12 @@ public class CharacterManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void Murder()
+    {
+        _value = 0;
+        if (_healthBar != null) _healthBar.value = _value;
     }
 
     public void ResetHealth()

@@ -41,6 +41,8 @@ public class QuestionManager : MonoBehaviour
     private bool _isResponsesDisplayed = false;
     private GameObject _enemy;
 
+    private bool _isCriticalEnable; //Critical damage from bonus object
+
     private void Start()
     {
         _ans1.onClick.AddListener(() => OnAnswerButtonClicked(0));
@@ -85,6 +87,7 @@ public class QuestionManager : MonoBehaviour
 
     private void Setup()
     {
+        _isCriticalEnable = false;
         _isFirstQuestionDisplayed = false;
         ResetQuestion();
     }
@@ -118,6 +121,13 @@ public class QuestionManager : MonoBehaviour
         {
             HandleIncorrectAnswer();
         }
+
+        _isCriticalEnable = false;
+    }
+
+    public void HandleCriticalAnswer()
+    {
+        _isCriticalEnable = true;
     }
 
     private void HandleCorrectAnswer()
@@ -128,7 +138,13 @@ public class QuestionManager : MonoBehaviour
 
         int damage = 5 + Mathf.RoundToInt(10 * _timer.TimeRemaining / 100);
         var enemyHealth = _enemy.GetComponent<CharacterManager>();
-        enemyHealth.DamageLife(damage);
+
+        if (_isCriticalEnable) {
+            enemyHealth.Murder(); 
+        }
+        else {
+            enemyHealth.DamageLife(damage);
+        }
 
         if (enemyHealth.IsDead())
         {

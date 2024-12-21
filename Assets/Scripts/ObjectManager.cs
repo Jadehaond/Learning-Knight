@@ -11,34 +11,31 @@ public class ObjectManager : MonoBehaviour
     private GameManager GameManager => _instance ??= GameManager.Instance;
 
     [SerializeField] private RectTransform camembertContainer; // Conteneur circulaire
-    [SerializeField] private GameObject menuContainer; // Conteneur des boutons
-    [SerializeField] private List<GameObject> objectPrefabs; // Liste des prefabs dans l'ordre de l'énum OBJETS
+    [SerializeField] private GameObject menuContainer; // Conteneur des boutons (si nécessaire)
     [SerializeField] private List<Sprite> objectIcons; // Liste des icônes associées aux OBJETS
 
-    private Dictionary<OBJETS, GameObject> objectPrefabMap = new Dictionary<OBJETS, GameObject>();
     private Dictionary<OBJETS, Sprite> objectIconMap = new Dictionary<OBJETS, Sprite>();
     private List<OBJETS> activeObjects = new List<OBJETS>(); // Liste des objets actifs
-    private List<Image> parts = new List<Image>(); // Images des parts circulaires
+    private List<GameObject> parts = new List<GameObject>(); // Images des parts circulaires
 
-    public enum OBJETS { SOUDOYER, PLUME, CHRONO, ENVELOPPE, DE, QUITTEOUDOUBLE }
-
+    public enum OBJETS { SOUDOYER, PLUME, CHRONO, DE, QUITTEOUDOUBLE }
     [SerializeField] private Timer _timer;
 
     private void Start()
     {
+        
+        activeObjects.Add(OBJETS.SOUDOYER);
+        activeObjects.Add(OBJETS.PLUME);
+        activeObjects.Add(OBJETS.CHRONO);
+        activeObjects.Add(OBJETS.DE);
+        activeObjects.Add(OBJETS.QUITTEOUDOUBLE);
+
         InitializeObjectMappings();
-        PopulateMenu();
         UpdateCamembert();
     }
 
     private void InitializeObjectMappings()
     {
-        // Associer les prefabs aux OBJETS
-        for (int i = 0; i < objectPrefabs.Count && i < System.Enum.GetValues(typeof(OBJETS)).Length; i++)
-        {
-            objectPrefabMap[(OBJETS)i] = objectPrefabs[i];
-        }
-
         // Associer les icônes aux OBJETS
         for (int i = 0; i < objectIcons.Count && i < System.Enum.GetValues(typeof(OBJETS)).Length; i++)
         {
@@ -46,104 +43,80 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
-    private void PopulateMenu()
-    {
-        // Supprimer les anciens boutons
-        foreach (Transform child in menuContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // Créer un bouton pour chaque objet actif
-        foreach (OBJETS objet in activeObjects)
-        {
-            if (objectPrefabMap.TryGetValue(objet, out GameObject prefab))
-            {
-                GameObject button = Instantiate(prefab, menuContainer.transform);
-                ConfigureButton(button, objet);
-            }
-        }
-    }
-
-    private void ConfigureButton(GameObject button, OBJETS objet)
-    {
-        // Ajouter un texte descriptif
-        TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (text != null)
-        {
-            text.text = objet.ToString();
-        }
-
-        // Ajouter une icône
-        Image icon = button.transform.Find("Icon").GetComponent<Image>();
-        if (icon != null && objectIconMap.TryGetValue(objet, out Sprite sprite))
-        {
-            icon.sprite = sprite;
-        }
-
-        // Assigner une action au bouton
-        Button btnComponent = button.GetComponent<Button>();
-        if (btnComponent != null)
-        {
-            btnComponent.onClick.AddListener(() => UseObject(objet));
-        }
-    }
-
     private void UpdateCamembert()
+{
+    // Supprimer les parts existantes
+    foreach (var part in parts)
     {
-        // Supprimer les parts existantes
-        foreach (var part in parts)
-        {
-            Destroy(part.gameObject);
-        }
-        parts.Clear();
-
-        int elementCount = activeObjects.Count;
-        if (elementCount == 0) return;
-
-        // Calculer l'angle de chaque part
-        float anglePerPart = 360f / elementCount;
-
-        for (int i = 0; i < elementCount; i++)
-        {
-            OBJETS objet = activeObjects[i];
-
-            // Créer une Image pour chaque part
-            GameObject partObject = new GameObject($"Part_{i}", typeof(RectTransform), typeof(Image));
-            partObject.transform.SetParent(camembertContainer, false);
-
-            // Configurer le RectTransform
-            RectTransform partTransform = partObject.GetComponent<RectTransform>();
-            partTransform.sizeDelta = camembertContainer.sizeDelta; // Même taille que le conteneur
-            partTransform.localRotation = Quaternion.Euler(0, 0, -anglePerPart * i);
-
-            // Configurer l'Image
-            Image partImage = partObject.GetComponent<Image>();
-            partImage.type = Image.Type.Filled;
-            partImage.fillMethod = Image.FillMethod.Radial360;
-            partImage.fillAmount = anglePerPart / 360f;
-
-            // Ajouter une icône si disponible
-            if (objectIconMap.TryGetValue(objet, out Sprite icon))
-            {
-                partImage.sprite = icon;
-                partImage.color = Color.white; // Ajuster pour afficher correctement l'icône
-            }
-            else
-            {
-                partImage.color = Random.ColorHSV(); // Couleur aléatoire si aucune icône
-            }
-
-            parts.Add(partImage);
-        }
+        Destroy(part.gameObject);
     }
+
+    parts.Clear();
+
+    int elementCount = activeObjects.Count;
+    if (elementCount == 0) return;
+
+    // Calculer l'angle de chaque part
+    float anglePerPart = 360f / elementCount;
+    float radius = camembertContainer.rect.width / 2f;  // Rayon du cercle en fonction de la taille du conteneur
+
+    for (int i = 0; i < elementCount; i++)
+    {
+        OBJETS objet = activeObjects[i];
+
+        // Créer un nouveau GameObject pour chaque bouton
+        GameObject button = new GameObject($"Button_{objet}", typeof(RectTransform), typeof(Button));
+        button.transform.SetParent(camembertContainer, false);  // Parenté au conteneur principal
+
+        // Configurer le RectTransform du bouton
+        RectTransform buttonTransform = button.GetComponent<RectTransform>();
+        buttonTransform.sizeDelta = new Vector2(50f, 50f);  // Taille du bouton (ajustez selon vos besoins)
+
+        // Calculer la position du bouton sur la bordure du cercle (coordonnées polaires -> cartésiennes)
+        float angleInRadians = Mathf.Deg2Rad * (anglePerPart * i); // Conversion de l'angle en radians
+        float xPos = Mathf.Cos(angleInRadians) * radius; // Position en x
+        float yPos = Mathf.Sin(angleInRadians) * radius; // Position en y
+        buttonTransform.localPosition = new Vector3(xPos, yPos, 0);
+
+        // Centrer le pivot du bouton sur lui-même
+        buttonTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        buttonTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        buttonTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        // Créer un GameObject séparé pour l'image
+        GameObject imageObject = new GameObject("Image", typeof(Image));
+        imageObject.transform.SetParent(button.transform, false);  // Faire de l'image un enfant du bouton
+
+        // Configurer le RectTransform de l'image
+        RectTransform imageTransform = imageObject.GetComponent<RectTransform>();
+        imageTransform.sizeDelta = new Vector2(50f, 50f); // Taille de l'image (ajustez selon vos besoins)
+        imageTransform.anchorMin = new Vector2(0.5f, 0.5f); // Centrer l'image dans le bouton
+        imageTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        imageTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        // Ajouter l'icône à l'image
+        Image buttonImage = imageObject.GetComponent<Image>();
+        buttonImage.sprite = objectIconMap[objet]; // Utiliser l'icône de l'objet
+        buttonImage.preserveAspect = true; // Garder les proportions de l'image
+
+        // Ajouter un Mask pour délimiter la zone cliquable
+        Mask mask = button.AddComponent<Mask>();
+        mask.showMaskGraphic = false;  // Masquer le graphique du mask pour ne garder que la zone de clic
+
+        // Ajouter l'action du bouton
+        Button buttonComponent = button.GetComponent<Button>();
+        buttonComponent.onClick.AddListener(() => UseObject(objet)); // Action lors du clic
+
+        // Ajouter le bouton à la liste des parts
+        parts.Add(button);
+    }
+}
 
     public void AddObject(OBJETS objet)
     {
         if (!activeObjects.Contains(objet))
         {
             activeObjects.Add(objet);
-            PopulateMenu();
             UpdateCamembert();
         }
     }
@@ -153,7 +126,6 @@ public class ObjectManager : MonoBehaviour
         if (activeObjects.Contains(objet))
         {
             activeObjects.Remove(objet);
-            PopulateMenu();
             UpdateCamembert();
         }
     }
@@ -169,7 +141,7 @@ public class ObjectManager : MonoBehaviour
         switch (objet)
         {
             case OBJETS.SOUDOYER:
-                //runPiece();
+                runPiece();
                 Debug.Log("Utilisation de l'objet Soudoie.");
                 break;
             case OBJETS.PLUME:
@@ -180,14 +152,12 @@ public class ObjectManager : MonoBehaviour
                 Debug.Log("Ajout de temps avec Chrono.");
                 runChrono();
                 break;
-            case OBJETS.ENVELOPPE:
-                Debug.Log("Indice affiché avec Enveloppe.");
-                break;
             case OBJETS.DE:
                 Debug.Log("Question changée avec Dé.");
                 runDe();
                 break;
             case OBJETS.QUITTEOUDOUBLE:
+                runQuitteOuDouble();
                 Debug.Log("Quitte ou double activé.");
                 break;
         }
@@ -204,7 +174,7 @@ public class ObjectManager : MonoBehaviour
     	activeObjects.Remove(objet);
     }
     
-    public int[] runPlume()
+    public void runPlume()
     {
         int vraie = GameManager.QuestionManager.CorrectAnswerIndex;
         int[] percentages = new int[4];
@@ -214,7 +184,7 @@ public class ObjectManager : MonoBehaviour
         percentages[vraie] = Range(40, 60); // Entre 40% et 60%
         totalPercentage -= percentages[vraie];
 
-        // Répartir le reste entre les mauvaises réponses --> Faire des pourcentages dofférents entre les mauvaises réponses
+        // Répartir le reste entre les mauvaises réponses --> Faire des pourcentages différents entre les mauvaises réponses
         for (int i = 0; i < percentages.Length; i++)
         {
             if (i != vraie)
@@ -227,8 +197,20 @@ public class ObjectManager : MonoBehaviour
         // La somme est égale à 100
         percentages[Range(0, 4)] += totalPercentage;
 
+        // Mettre à jour l'affichage des réponses avec les pourcentages
+        string[] responses = GameManager.QuestionManager.Reponses;
+       
+        for (int i = 0; i < responses.Length; i++)
+        {
+            // Ajouter le pourcentage entre parenthèses à chaque réponse
+            if (responses[i] != null) // Vérifier si le champ de texte est non nul
+            {
+                responses[i] = $"{responses[i]} ({percentages[i]}%)"; // Ajouter le pourcentage à la réponse
+            }
+        }
+
+        // Afficher les réponses dans l'interface
         GameManager.QuestionManager.DisplayResponses();
-        return percentages;
     }
     
     public string[] runPiece()
@@ -260,55 +242,13 @@ public class ObjectManager : MonoBehaviour
         GameManager.QuestionManager.LoadNextQuestion();
     }
 
-    /*public string runEnveloppe(Question currentQuestion)
-    {
-        // --> public string hint; Comment fournir l'indice ?? ajouter ceci dans le fichier excel qui sera lu par la suite puis stocké dansune varaible pendant la question et renouvelé a chaque réponse ?
-        if (nb > 0)
-        {
-            removeObject();
-            return currentQuestion.hint; // Retourne l'indice
-        }
-        return "";
-    }*/
-
     public void runChrono()
     {
         _timer.AddTimer(3f);
     }
 
-    /*public void runQuitteOuDouble(bool correctAnswer, Player player)
+    public void runQuitteOuDouble()
     {
-        if (nb > 0)
-        {
-            if (correctAnswer)
-            {
-                //player.DealCriticalDamage();
-                Debug.Log("Coup critique infligé !");
-            }
-            else
-            {
-                //player.ReduceDefense(10); // Réduction de défense
-                Debug.Log("Perte de défense !");
-            }
-        }
-    }*/
-
-    /*  ????????????????????????
-        Dans fichier KnightManager :
-        public int attackPower;
-        public int defense;
-
-        public void DealCriticalDamage()
-        {
-            int criticalDamage = attackPower * 2;
-            Debug.Log("Dégâts critiques : " + criticalDamage);
-        }
-
-        public void ReduceDefense(int amount)
-        {
-            defense -= amount;
-            Debug.Log("Défense réduite de : " + amount);
-        }
-    */
-  
+        GameManager.QuestionManager.HandleCriticalAnswer();
+    }
 }
