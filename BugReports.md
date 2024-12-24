@@ -9,3 +9,5 @@
 ## Problème de compatibilité entre les différents écrans et leurs tailles
 
 ## Vitesse du joueur selon les pc qui font tourner le code ??
+
+## Impossible de sprinter ou de sauter dans le niveau 1

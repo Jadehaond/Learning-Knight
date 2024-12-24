@@ -4304,8 +4304,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1072422439}
-  - {fileID: 2116388126}
   - {fileID: 839780126}
+  - {fileID: 2116388126}
   - {fileID: 1519794630}
   m_Father: {fileID: 1158646377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6992,7 +6992,7 @@ GameObject:
   - component: {fileID: 839780128}
   - component: {fileID: 839780127}
   m_Layer: 5
-  m_Name: ObjectKnight
+  m_Name: StatsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8778,7 +8778,7 @@ GameObject:
   - component: {fileID: 1072422441}
   - component: {fileID: 1072422440}
   m_Layer: 5
-  m_Name: PrefabKnight
+  m_Name: KnightPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11173,8 +11173,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1119249046}
   m_HandleRect: {fileID: 1119249045}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.9997744
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12211,6 +12211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4a7165b60fd7e840bb5ef6f8a9f9e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  KnightPanel: {fileID: 0}
+  player: {fileID: 196284267}
+  StatsPanel: {fileID: 839780126}
   equipmentManager: {fileID: 1415743447}
   equipmentItemPrefab: {fileID: 8542996567644046979, guid: c37e2ba643ab25f4f82dd67d2a8fa36b, type: 3}
   contentPanel: {fileID: 1428770668}
@@ -12383,7 +12386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00003672294}
+  m_AnchoredPosition: {x: 0, y: 0.000018915776}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1428770669
@@ -16829,7 +16832,7 @@ GameObject:
   - component: {fileID: 2116388128}
   - component: {fileID: 2116388127}
   m_Layer: 5
-  m_Name: SkinKnight
+  m_Name: ObjectsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
