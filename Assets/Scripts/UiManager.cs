@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour
     private Coroutine _fadeCoroutine = null;
     [SerializeField] private TextMeshProUGUI _timerIntroText;
     private Coroutine _startIntroTimerCoroutine;
+
+    public UiInventory uiInventory;
+
     private GameManager _instance;
     private GameManager GameManager => _instance ??= GameManager.Instance;
 
@@ -171,6 +174,8 @@ public class UIManager : MonoBehaviour
         _oldState = _currentState;
         _currentState = newState;
         ShowElement(_currentState.ToString());
+
+        if (_currentState == UIState.Knight) uiInventory.PopulateInventory();
     }
 
     public void DisplayMain() => SetUIState(UIState.Background);
@@ -214,4 +219,5 @@ public class UIManager : MonoBehaviour
         _timerIntroText.transform.parent.gameObject.SetActive(false);
         GameManager.LevelManager.ChangeLevelStateByString("Running");
     }
+
 }

@@ -145,7 +145,7 @@ public class LevelManager : MonoBehaviour
     {
         _enemy.SetActive(false);
 
-        if (_enemy.name == "Ennemi_Boss")
+        if (_enemy.CompareTag("Boss"))
         {
             ChangeLevelState(LevelState.Finished);
             DisplayResults();

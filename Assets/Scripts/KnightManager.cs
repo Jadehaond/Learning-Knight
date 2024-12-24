@@ -91,6 +91,8 @@ public class KnightManager : MonoBehaviour
 
     private bool canDoInput()
     {
+        Debug.Log(IsGrounded());
+        Debug.Log(_currentCharacterState);
         return (IsGrounded() && _currentCharacterState == CharacterState.Running);
     }
 
@@ -222,7 +224,7 @@ public class KnightManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !GameManager.LevelManager.IsCurrentLevelState("Fighting"))
+        if ((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Boss")) && !GameManager.LevelManager.IsCurrentLevelState("Fighting"))
         {
             GameManager.UiManager.DisplayQuestions();
             GameManager.LevelManager.SetEnemy(collision.gameObject);

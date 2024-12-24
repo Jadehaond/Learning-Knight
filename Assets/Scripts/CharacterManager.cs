@@ -24,9 +24,26 @@ public class CharacterManager : MonoBehaviour
     public float MaxHealth => _maxHealth;
     private Camera _gameCamera;
 
-    private float attaque;
+    private float damage;
+    public float Damage
+    {
+        get => damage;
+        set => damage = value;
+    }
+
     private float defense;
+    public float Defense
+    {
+        get => defense;
+        set => defense = value;
+    }
+
     private float vitesse;
+    public float Vitesse
+    {
+        get => vitesse;
+        set => vitesse = value;
+    }
     #endregion
 
     void Start()
@@ -37,7 +54,7 @@ public class CharacterManager : MonoBehaviour
 
     private void InitializeCharacterStats()
     {
-        attaque = 5.0f;
+        damage = 5.0f;
         defense = 5.0f;
         vitesse =1.2f;
     }
