@@ -8,8 +8,8 @@ public class KnightManager : MonoBehaviour
     #region Variables
     private static readonly Vector3 _standByPosition = new Vector3(175f, 75f, 0f);
     private static readonly Vector3 _standByRotation = new Vector3(0f, 0f, 0f);
-    private const float _defaultSpeed = 0.1f;
-    private const float _sprintMultiplier = 1.8f;
+    private const float _defaultSpeed = 30f;
+    private const float _sprintMultiplier = 2f;
     private const float _jumpForce = 150f;
 
     private float _currentSpeed = 0f;
@@ -53,8 +53,16 @@ public class KnightManager : MonoBehaviour
     {
         if (CanUpdateCharacter())
         {
-            HandleMovement();
+            //HandleMovement();
             HandleInput();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (CanUpdateCharacter())
+        {
+            HandleMovement();
         }
     }
 
@@ -64,8 +72,10 @@ public class KnightManager : MonoBehaviour
     }
 
     private void HandleMovement()
-    {
-        transform.position = new Vector2(transform.position.x + _currentSpeed, transform.position.y);
+    { 
+        float moveDistance = _currentSpeed * Time.deltaTime;
+        transform.position = new Vector2(transform.position.x + moveDistance, transform.position.y);
+
         /*
         if (IsGrounded())
         {
