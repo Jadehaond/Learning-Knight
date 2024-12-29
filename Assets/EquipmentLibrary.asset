@@ -16,8 +16,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f056b0a9d9c27b445838e87f54201893, type: 2}
   shields:
   - {fileID: 11400000, guid: 8ce35593e1d286e4a8c90ee3467f898e, type: 2}
-  - {fileID: 11400000, guid: 1f533e6c4aed3bb4790eac2adc66acc9, type: 2}
-  - {fileID: 11400000, guid: 6f354d60f2154f847a64cb62ecbcedea, type: 2}
   boots: []
   armors: []
   weapons:

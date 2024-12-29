@@ -369,6 +369,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -2409,7 +2422,99 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PackCastle01_0: 4081954067068521759
+      PackCastle01_1: -7929151455688192581
+      PackCastle01_10: -3631058824921839882
+      PackCastle01_11: 2682271827727872438
+      PackCastle01_12: -7773368686112363652
+      PackCastle01_13: 3141136379158657811
+      PackCastle01_14: -2564781568853587925
+      PackCastle01_15: -6810112381841798437
+      PackCastle01_16: -2537459293491020131
+      PackCastle01_17: -7422203076804926160
+      PackCastle01_18: 2561000351754899647
+      PackCastle01_19: 7501805477941183827
+      PackCastle01_2: -6099911575230324936
+      PackCastle01_20: -7521015566941960927
+      PackCastle01_21: 6127154616702641552
+      PackCastle01_22: 4851085220229808372
+      PackCastle01_23: -794400941227761076
+      PackCastle01_24: -8570471188876206455
+      PackCastle01_25: 5111485212432387137
+      PackCastle01_26: 6880199716011341138
+      PackCastle01_27: -2366415346578973016
+      PackCastle01_28: -4480736739544124482
+      PackCastle01_29: -7836562191742516283
+      PackCastle01_3: -4963137977137257419
+      PackCastle01_30: -5404804830182309999
+      PackCastle01_31: 908047235249205407
+      PackCastle01_32: -2829424929305142791
+      PackCastle01_33: -4949360650122459599
+      PackCastle01_34: 7166904352716765246
+      PackCastle01_35: 6279040148529665120
+      PackCastle01_36: -7910381968737033060
+      PackCastle01_37: 2103128836940350184
+      PackCastle01_38: -5662498205198099685
+      PackCastle01_39: 6723478631509094506
+      PackCastle01_4: 7896234578679360209
+      PackCastle01_40: -7041760655605765797
+      PackCastle01_41: 5031966081275608143
+      PackCastle01_42: 1002288149787676121
+      PackCastle01_43: -4772031667942392021
+      PackCastle01_44: -2208337011572094088
+      PackCastle01_45: -2858808126408511211
+      PackCastle01_46: 3288170400431251928
+      PackCastle01_47: 169751461171398891
+      PackCastle01_48: 1349610192551071128
+      PackCastle01_49: -8669610876519536974
+      PackCastle01_5: -3808366360947604237
+      PackCastle01_50: 1179384119211142320
+      PackCastle01_51: -2742506099416225663
+      PackCastle01_52: 6105378804871275466
+      PackCastle01_53: 4829976454276544918
+      PackCastle01_54: -8289169845263236158
+      PackCastle01_55: -899069314168288364
+      PackCastle01_56: 3275710495877678311
+      PackCastle01_57: 1905571450701323623
+      PackCastle01_58: -2363055748471140591
+      PackCastle01_59: -5986776022674294356
+      PackCastle01_6: 4424676782209778794
+      PackCastle01_60: 283167140407603901
+      PackCastle01_61: 861020843804825452
+      PackCastle01_62: -435594421335527047
+      PackCastle01_63: -6538567906516245738
+      PackCastle01_64: -3123380078808078114
+      PackCastle01_65: -5134271557839126543
+      PackCastle01_66: 6278524968144030500
+      PackCastle01_67: 2280561082538278909
+      PackCastle01_68: -5777600566533811444
+      PackCastle01_69: -2982268088239218203
+      PackCastle01_7: -8325569817615976368
+      PackCastle01_70: -5722508890327870400
+      PackCastle01_71: 3047526596982762152
+      PackCastle01_72: -8380023255085179169
+      PackCastle01_73: -6354771434946122838
+      PackCastle01_74: 2247386189577005141
+      PackCastle01_75: 3487507860602371487
+      PackCastle01_76: 2632408315759969508
+      PackCastle01_77: 2591337226946395585
+      PackCastle01_78: -8082668801948968332
+      PackCastle01_79: 6038583731716191751
+      PackCastle01_8: 7920486848185049426
+      PackCastle01_80: 8953925489880789483
+      PackCastle01_81: -3544349072842593472
+      PackCastle01_82: -4554444430540209218
+      PackCastle01_83: 7387179972523455033
+      PackCastle01_84: 7030155865223347573
+      PackCastle01_85: 7333836307006946330
+      PackCastle01_86: -4623363051261585757
+      PackCastle01_87: -7268871225074149657
+      PackCastle01_88: 2816353710968538117
+      PackCastle01_89: 733573301132508282
+      PackCastle01_9: -608674410997092170
+      PackCastle01_90: -2581212684693486770
+      PackCastle01_91: -210553019586160959
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
