@@ -1,59 +1,67 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class KnightManager : MonoBehaviour
 {
-    #region Variables
-    private static readonly Vector3 _standByPosition = new Vector3(175f, 75f, 0f);
-    private static readonly Vector3 _standByRotation = new Vector3(0f, 0f, 0f);
-    private const float _defaultSpeed = 30f;
-    private const float _sprintMultiplier = 2f;
-    private const float _jumpForce = 150f;
+    #region Constants & Static Values
+
+    // Position et rotation par défaut du personnage hors combat
+    private static readonly Vector3 StandByPosition = new Vector3(175f, 75f, 0f);
+    private static readonly Vector3 StandByRotation = Vector3.zero;
+
+    // Valeurs de mouvement de base
+    private const float DefaultSpeed = 30f;
+    private const float SprintMultiplier = 2f;
+    private const float JumpForce = 150f;
+
+    #endregion
+
+    #region Private Fields
 
     private float _currentSpeed = 0f;
     private GameManager _instance;
+
+    // Accès au singleton GameManager
     private GameManager GameManager => _instance ??= GameManager.Instance;
 
-    [Header("Settings")]
-    [SerializeField] private LayerMask _groundLayerMask;
-    [SerializeField] private TextMeshProUGUI _sprintCooldownText;
-    [SerializeField] private TextMeshProUGUI _slideCooldownText;
-
-    [Header("State Variables")]
     private BoxCollider2D _boxCollider;
-
     private Coroutine _activeCoroutine = null;
+
+    // États possibles du personnage
     private enum CharacterState { Running, Jumping, Sliding, Sprinting, Fighting }
     private CharacterState _currentCharacterState = CharacterState.Running;
-    private Vector3 _characterNonFightPlace;
+
+    private SpriteRenderer knightSprite;
+
     #endregion
+
+    #region Inspector References
+
+    [Header("Settings")]
+    [SerializeField] private LayerMask _groundLayerMask; // Couches considérées comme sol
+    [SerializeField] private TextMeshProUGUI _sprintCooldownText; // Texte UI cooldown sprint
+    [SerializeField] private TextMeshProUGUI _slideCooldownText;  // Texte UI cooldown glissade
+
+    #endregion
+
+    #region Unity Events
 
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider2D>();
+        knightSprite = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
-        ///ResetCharacterState();
-        SetSpeed(_defaultSpeed);
+        ResetCharacterState();
     }
-
-    public void ResetCharacterState()
-    {
-        SetSpeed(_defaultSpeed);
-        this.gameObject.transform.eulerAngles = _standByRotation;
-        this.gameObject.transform.position = _standByPosition;
-        this.gameObject.GetComponent<CharacterManager>().GainLife(this.gameObject.GetComponent<CharacterManager>().MaxHealth);
-    }    
 
     private void Update()
     {
         if (CanUpdateCharacter())
         {
-            //HandleMovement();
             HandleInput();
         }
     }
@@ -66,179 +74,269 @@ public class KnightManager : MonoBehaviour
         }
     }
 
-    private bool CanUpdateCharacter()
-    {
-        return !GameManager.PauseManager.IsPaused && GameManager.LevelManager.IsCurrentLevelState("Running");
-    }
-
-    private void HandleMovement()
-    { 
-        float moveDistance = _currentSpeed * Time.deltaTime;
-        transform.position = new Vector2(transform.position.x + moveDistance, transform.position.y);
-
-        /*
-        if (IsGrounded())
-        {
-            Vector3 currentRotation = transform.eulerAngles;
-            if (currentRotation != Vector3.zero)
-            {
-                transform.eulerAngles = Vector3.zero;
-            }
-        }
-        */
-    }
-
-    public void SetUpFightScene()
-    {
-        InterruptState();
-        ChangeState(CharacterState.Fighting);
-    }
-
-    public void EndUpFightScene()
-    {
-        ChangeState(CharacterState.Running);
-    }
-
-    private bool canDoInput()
-    {
-        Debug.Log(IsGrounded());
-        Debug.Log(_currentCharacterState);
-        return (IsGrounded() && _currentCharacterState == CharacterState.Running);
-    }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(KeyCode.A) && canDoInput() && _sprintCooldownText.text == "")
-        {
-            _activeCoroutine = StartCoroutine(StartSprinting());
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && canDoInput())
-        {
-            _activeCoroutine = StartCoroutine(StartJumping());
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z) && canDoInput() && _slideCooldownText.text == "")
-        {
-            _activeCoroutine = StartCoroutine(StartSliding());
-        }
-    }
-
-    private IEnumerator StartSprinting()
-    {
-        ChangeState(CharacterState.Sprinting);
-        SetSpeed(_defaultSpeed * _sprintMultiplier);
-        yield return new WaitForSeconds(1f);
-
-        SetSpeed(_defaultSpeed);
-        StartCoroutine(DisplayCooldown(_sprintCooldownText, 5f));
-        ChangeState(CharacterState.Running);
-    }
-
-    private IEnumerator DisplayCooldown(TextMeshProUGUI text, float duration)
-    {
-        while (duration > 0)
-        {
-            text.text = duration.ToString();
-            duration -= 1f;
-            yield return new WaitForSeconds(1f);
-        }
-        text.text = "";
-        ChangeState(CharacterState.Running);
-    }
-
-    private IEnumerator StartSliding()
-    {
-        ChangeState(CharacterState.Sliding);
-        this.transform.eulerAngles += new Vector3(0f, 0f, 90f);
-        StartCoroutine(DisplayCooldown(_slideCooldownText, 3f));
-
-        yield return new WaitForSeconds(0.75f);
-
-        yield return StartCoroutine(WaitForSpaceAbove());
-
-        this.transform.eulerAngles += new Vector3(0f, 0f, -90f);
-        ChangeState(CharacterState.Running);
-    }
-
-    private IEnumerator StartJumping()
-    {
-        ChangeState(CharacterState.Jumping);
-        GetComponent<Rigidbody2D>().AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-        yield return null;
-
-        ChangeState(CharacterState.Running);
-    }
-
-    public void InterruptState()
-    {
-        if (_activeCoroutine != null) {
-            StopCoroutine(_activeCoroutine);
-            _activeCoroutine = null;
-            if (_currentCharacterState == CharacterState.Jumping && _activeCoroutine != null)
-            {
-                GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-            }
-        }
-    }
-
-    private IEnumerator WaitForSpaceAbove()
-    {
-        // Raycast ou BoxCast vers le haut pour vérifier l'espace disponible
-        bool isSpaceAbove = false;
-        float checkInterval = 0.1f;  // Intervalle de vérification en secondes
-
-        while (!isSpaceAbove)
-        {
-            // Vérifier s'il y a de la place au-dessus de la tête
-            isSpaceAbove = CheckSpaceAbove();
-
-            if (!isSpaceAbove)
-            {
-                yield return new WaitForSeconds(checkInterval);
-            }
-        }
-    }
-
-    private bool CheckSpaceAbove()
-    {
-        // Taille du personnage pour déterminer combien de place il lui faut
-        float characterHeight = 75f; // Hauteur à vérifier
-        Vector2 rayStart = new Vector2(transform.position.x, transform.position.y);
-        Vector2 rayDirection = Vector2.up; 
-        float rayLength = characterHeight;
-        RaycastHit2D hit = Physics2D.Raycast(rayStart, rayDirection, rayLength);
-
-        // Si le Raycast ne touche rien, alors il y a de l'espace pour se relever
-        return hit.collider == null;
-    }
-
-    private bool IsGrounded()
-    {
-        // Obtenez le rayon du bord (Edge Radius) du BoxCollider2D
-        float edgeRadius = _boxCollider.edgeRadius;
-        Vector2 boxSizeWithEdgeRadius = _boxCollider.bounds.size + new Vector3(edgeRadius * 2, edgeRadius * 2, 0);
-        return Physics2D.BoxCast(_boxCollider.bounds.center, boxSizeWithEdgeRadius, 0f, Vector2.down, 0.1f, _groundLayerMask);
-        //return Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, 0.1f, _groundLayerMask);
-    }
-
-    private void SetSpeed(float speed)
-    {
-        _currentSpeed = speed;
-    }
-
-    private void ChangeState(CharacterState newState)
-    {
-        _currentCharacterState = newState;
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Boss")) && !GameManager.LevelManager.IsCurrentLevelState("Fighting"))
+        // Si on entre en collision avec un ennemi et qu'on n'est pas déjà en combat
+        if ((collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Boss"))
+            && !GameManager.LevelManager.IsCurrentLevelState("Fighting"))
         {
             GameManager.UiManager.DisplayQuestions();
             GameManager.LevelManager.SetEnemy(collision.gameObject);
             GameManager.LevelManager.ChangeLevelStateByString("Fighting");
         }
     }
+
+    #endregion
+
+    #region Movement & State
+
+    // Vérifie si le personnage peut être contrôlé (pas en pause et dans le bon état de niveau)
+    private bool CanUpdateCharacter() =>
+        !GameManager.PauseManager.IsPaused && GameManager.LevelManager.IsCurrentLevelState("Running");
+
+    // Gère le mouvement horizontal
+    private void HandleMovement()
+    {
+        float moveDistance = _currentSpeed * Time.deltaTime;
+        transform.position += new Vector3(moveDistance, 0f, 0f);
+    }
+
+    // Gère les entrées claviers pour les actions
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.A) && CanDoInput() && _sprintCooldownText.text == "")
+        {
+            _activeCoroutine = StartCoroutine(StartSprinting());
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && CanDoInput())
+        {
+            _activeCoroutine = StartCoroutine(StartJumping());
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z) && CanDoInput() && _slideCooldownText.text == "")
+        {
+            _activeCoroutine = StartCoroutine(StartSliding());
+        }
+    }
+
+    // Détermine si le personnage peut faire une action
+    private bool CanDoInput() => IsGrounded() && _currentCharacterState == CharacterState.Running;
+
+    // Coroutine de sprint
+    private IEnumerator StartSprinting()
+    {
+        ChangeState(CharacterState.Sprinting);
+        SetSpeed(DefaultSpeed * SprintMultiplier);
+        yield return new WaitForSeconds(1f);
+
+        SetSpeed(DefaultSpeed);
+        StartCoroutine(DisplayCooldown(_sprintCooldownText, 5f));
+        ChangeState(CharacterState.Running);
+    }
+
+    // Coroutine de saut
+    private IEnumerator StartJumping()
+    {
+        ChangeState(CharacterState.Jumping);
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+        yield return null;
+        ChangeState(CharacterState.Running);
+    }
+
+    // Coroutine de glissade
+    private IEnumerator StartSliding()
+    {
+        ChangeState(CharacterState.Sliding);
+        transform.eulerAngles += new Vector3(0f, 0f, 90f);
+        StartCoroutine(DisplayCooldown(_slideCooldownText, 3f));
+
+        yield return new WaitForSeconds(0.75f);
+        yield return StartCoroutine(WaitForSpaceAbove());
+
+        transform.eulerAngles -= new Vector3(0f, 0f, 90f);
+        ChangeState(CharacterState.Running);
+    }
+
+    // Affiche un cooldown sur un texte pendant un certain temps
+    private IEnumerator DisplayCooldown(TextMeshProUGUI text, float duration)
+    {
+        while (duration > 0)
+        {
+            text.text = duration.ToString("0");
+            duration -= 1f;
+            yield return new WaitForSeconds(1f);
+        }
+        text.text = "";
+    }
+
+    // Attend qu'il y ait de l'espace au-dessus du joueur (utile pour se relever d'une glissade)
+    private IEnumerator WaitForSpaceAbove()
+    {
+        while (!CheckSpaceAbove())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    // Vérifie via raycast s'il y a un obstacle au-dessus
+    private bool CheckSpaceAbove()
+    {
+        float rayLength = 75f;
+        Vector2 origin = transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.up, rayLength);
+        return hit.collider == null;
+    }
+
+    // Vérifie si le personnage est au sol via un BoxCast
+    private bool IsGrounded()
+    {
+        float edgeRadius = _boxCollider.edgeRadius;
+        Vector2 boxSize = _boxCollider.bounds.size + new Vector3(edgeRadius * 2, edgeRadius * 2, 0);
+        return Physics2D.BoxCast(_boxCollider.bounds.center, boxSize, 0f, Vector2.down, 0.1f, _groundLayerMask);
+    }
+
+    // Met à jour la vitesse du personnage
+    private void SetSpeed(float speed) => _currentSpeed = speed;
+
+    // Change l'état du personnage
+    private void ChangeState(CharacterState newState) => _currentCharacterState = newState;
+
+    // Interrompt l'action en cours si une coroutine est active
+    public void InterruptState()
+    {
+        if (_activeCoroutine != null)
+        {
+            StopCoroutine(_activeCoroutine);
+            _activeCoroutine = null;
+        }
+    }
+
+    // Réinitialise l'état du personnage
+    public void ResetCharacterState()
+    {
+        SetSpeed(DefaultSpeed);
+        transform.eulerAngles = StandByRotation;
+        transform.position = StandByPosition;
+
+        CharacterManager cm = GetComponent<CharacterManager>();
+        cm.GainLife(cm.MaxHealth);
+    }
+
+    // Prépare le personnage pour une scène de combat
+    public void SetUpFightScene()
+    {
+        InterruptState();
+        ChangeState(CharacterState.Fighting);
+    }
+
+    // Termine la scène de combat
+    public void EndUpFightScene()
+    {
+        ChangeState(CharacterState.Running);
+    }
+
+    #endregion
+
+    #region Visual Management
+
+
+    /// <summary>
+    /// Modifie le sprite affiché par le SpriteRenderer.
+    /// </summary>
+    /// <param name="newSprite">Le nouveau sprite à afficher.</param>
+    public void SetSprite(Sprite newSprite)
+    {
+        // Si le SpriteRenderer est bien présent, applique le sprite
+        if (knightSprite != null)
+            knightSprite.sprite = newSprite;
+    }
+
+    /// <summary>
+    /// Retourne le sprite actuellement affiché.
+    /// </summary>
+    /// <returns>Sprite actuel ou null si non disponible.</returns>
+    public Sprite GetSprite()
+    {
+        // Retourne le sprite actuel si possible
+        return knightSprite != null ? knightSprite.sprite : null;
+    }
+
+    public void UpdateSprite(Sprite newSprite)
+    {
+        if (IsChildSpriteAssigned(gameObject, $"Accessory_{newSprite.name}")) {
+            RemoveChildByName(gameObject, $"Accessory_{newSprite.name}");
+        } 
+        else 
+        {
+            CreateChildSpriteObject(gameObject, $"Accessory_{newSprite.name}", newSprite, new Vector3(0f, 1f, 0f), 5);
+        }
+    }
+
+    /// <summary>
+    /// Crée un GameObject enfant avec un SpriteRenderer au-dessus du personnage.
+    /// </summary>
+    /// <param name="parent">Le GameObject parent (ex. ton personnage)</param>
+    /// <param name="childName">Le nom du GameObject enfant (ex. "Helmet")</param>
+    /// <param name="sprite">Le sprite à afficher (ex. un casque)</param>
+    /// <param name="localPosition">Position locale par rapport au parent</param>
+    /// <param name="sortingOrder">Ordre de rendu (au-dessus du personnage)</param>
+    /// <returns>Le SpriteRenderer du nouvel objet</returns>
+    public SpriteRenderer CreateChildSpriteObject(
+        GameObject parent,
+        string childName,
+        Sprite sprite,
+        Vector3 localPosition,
+        int sortingOrder = 1)
+    {
+        // Crée un nouvel objet
+        GameObject child = new GameObject(childName);
+        
+        // Le rend enfant du parent
+        child.transform.SetParent(parent.transform);
+
+        // Position locale (ex: au-dessus de la tête)
+        child.transform.localPosition = localPosition;
+        
+        // Ajoute le SpriteRenderer
+        SpriteRenderer renderer = child.AddComponent<SpriteRenderer>();
+        renderer.sprite = sprite;
+        renderer.sortingOrder = sortingOrder;
+
+        return renderer;
+    }
+
+    /// <summary>
+    /// Supprime un GameObject enfant d’un parent en fonction de son nom.
+    /// </summary>
+    /// <param name="parent">Le GameObject parent (ex: le personnage)</param>
+    /// <param name="childName">Le nom du GameObject enfant à supprimer (ex: "Helmet")</param>
+    public void RemoveChildByName(GameObject parent, string childName)
+    {
+        Transform child = parent.transform.Find(childName);
+        if (child != null)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Vérifie si un enfant avec un SpriteRenderer contient déjà un sprite assigné.
+    /// </summary>
+    /// <param name="parent">Le GameObject parent</param>
+    /// <param name="childName">Le nom de l’enfant à vérifier</param>
+    /// <returns>True si l’enfant existe et a un sprite assigné, sinon false</returns>
+    public bool IsChildSpriteAssigned(GameObject parent, string childName)
+    {
+        Transform child = parent.transform.Find(childName);
+        if (child != null)
+        {
+            SpriteRenderer sr = child.GetComponent<SpriteRenderer>();
+            return sr != null && sr.sprite != null;
+        }
+
+        return false;
+    }
+
+    #endregion
 }

@@ -6,7 +6,6 @@ using TMPro;
 
 public class UIGameManager : MonoBehaviour
 {
-    [SerializeField] private CharacterManager _knight;
     [SerializeField] private GameObject canvasSprint;
     [SerializeField] private GameObject canvasAth;
     [SerializeField] private GameObject canvasQuestions;

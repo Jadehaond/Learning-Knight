@@ -11,7 +11,7 @@ public class EquipmentManager : MonoBehaviour
     private GameObject equipmentContainer;
     public EquipmentLibrary equipmentLibrary;
 
-    private GameObject Knight;
+    [SerializeField] private GameObject Knight;
     
     public enum Type { Null, Helmet, Shield, Boots, Armor, Weapon }
     public enum Rarity { Null, Common, Rare, Epic, Legendary }
@@ -33,26 +33,30 @@ public class EquipmentManager : MonoBehaviour
 
         foreach (var shield in equipmentLibrary.shields)
         {
-            if (shield.isEnable)
+            if (shield.isEnable) {
                 unlockedShields.Add(shield);
+            }
         }
 
         foreach (var boot in equipmentLibrary.boots)
         {
-            if (boot.isEnable)
+            if (boot.isEnable) {
                 unlockedBoots.Add(boot);
+            }
         }
 
         foreach (var armor in equipmentLibrary.armors)
         {
-            if (armor.isEnable)
+            if (armor.isEnable) {
                 unlockedArmors.Add(armor);
+            }
         }
 
         foreach (var weapon in equipmentLibrary.weapons)
         {
-            if (weapon.isEnable)
+            if (weapon.isEnable) {
                 unlockedWeapons.Add(weapon);
+            }
         }
     }
 
